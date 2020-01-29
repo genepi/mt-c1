@@ -1,0 +1,1046 @@
+<style>
+body
+{
+  margin:0;
+  padding:0;
+}
+div.LeftRight
+{
+  float:left;
+  height:100%;
+  position:absolute;
+  margin: 5px 5px 5px 5px
+  overflow: auto;
+}
+div.Splitter
+{
+  width:2px;
+  background-color:#808080;
+  float:left;
+  height:100%;
+  position:absolute;
+  cursor:ew-resize;
+}
+div.tabsheader2  {
+  border-bottom: 2px solid;
+  padding-bottom: 0px;
+  border-color: #808080;
+}
+
+button.tabsheader2 {
+  display: inline;
+  border: 2px solid;
+  border-color: #808080;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  background-color:#808080;
+  color: white;
+  border-bottom-width: 0;
+  margin: 2px;
+  margin-bottom: 0px;
+  padding: 5px;
+  cursor: pointer;
+  font-family: sans-serif;
+  z-index: 2;
+  outline: none;
+}
+
+button.tabsheader2[selected=true] {
+  background-color:white;
+  color: #808080;
+  margin-bottom: -5px;
+  border: 2px solid;
+  border-bottom-color: white;
+}
+
+div.tabscontent2 {
+  background-color:white;
+  font-family: sans-serif;
+  padding: 5px;
+  overflow: auto;
+  height: 100%;
+}
+
+a.icm {
+  color: #006400;
+  font-weight: bold;
+}
+
+</style>
+<script src="http://molsoft.com/lib/acticm.js"></script>
+<script>
+  var ACT = (function() {
+  var splitter,cont1,cont2;
+  var last_x = 0;
+
+  function initTabs()
+  {
+    splitter=document.getElementById("splitter");
+    cont1=document.getElementById("div1");
+    cont2=document.getElementById("div2");
+    cont1.style.display = splitter.style.display = cont2.style.display = "block";
+    //console.log( "cont1.clientWidth" , cont1.clientWidth  );
+    if (document.getElementById("tabh1")) {
+      last_x = cont1.clientWidth;
+      resetPosition( cont1.clientWidth );
+      selectTab(document.getElementById("tabh1"));
+      splitter.addEventListener("mousedown",spMouseDown);
+    } else {
+      cont1.style.display = splitter.style.display = "none";
+      resetPosition( 0 );
+    }
+  }
+
+  function spMouseDown(e)
+  {
+    splitter.removeEventListener("mousedown",spMouseDown);
+    window.addEventListener("mousemove",spMouseMove);
+    window.addEventListener("mouseup",spMouseUp);
+    last_x=e.clientX;
+  }
+
+  function spMouseUp(e)
+  {
+    window.removeEventListener("mousemove",spMouseMove);
+    window.removeEventListener("mouseup",spMouseUp);
+    splitter.addEventListener("mousedown",spMouseDown);
+    resetPosition(last_x);
+  }
+
+  function spMouseMove(e)
+  {
+    resetPosition(e.clientX);
+    last_x=e.clientX;
+  }
+
+  function resetPosition(nowX)
+  {
+    var ww=window.innerWidth;
+    var wh=window.innerHeight;
+    var dx=nowX-last_x;
+    if (cont1.style.display == "block") {
+      dx+=cont1.clientWidth;
+      cont1.style.width=dx+"px";
+      cont1.style.height=wh+"px";
+      splitter.style.marginLeft=dx+"px";
+      dx+=splitter.clientWidth;
+    }
+    cont2.style.marginLeft=dx+"px";
+    dx=ww-dx;
+    cont2.style.width=dx+"px";
+    if (document.act) document.act.updateLayout(true);
+  }
+
+  function selectTab(th)
+  {
+    var tabs = document.getElementById("tabh").childNodes;
+    var tab,j=1,t=-1;
+    for (var i=0; i<tabs.length; i++) {
+      if (tabs[i].className != "tabsheader2") continue;
+      if (tabs[i] == th) t = j;
+      tab  = document.getElementById("tab" + j );
+      tab.style.display = "none";
+      tabs[i].removeAttribute("selected");
+      j++;
+    }
+    if (t != -1) {
+      tab  = document.getElementById("tab" + t );
+      tab.style.display = "block";
+      th.setAttribute("selected",true);
+    }
+  }
+
+  return {
+    init      : function () { initTabs(); },
+    selectTab : function (th) { selectTab(th); },
+    updateLayout: function () { resetPosition( cont1.style.display == "block" ? cont1.clientWidth : 0 ); },
+  }
+
+})();
+
+function onLoadActiveIcm()
+{
+  document.getElementById('pdbloader').style.display='none';
+  //
+  ACT.init();
+  //
+  var act = new ActiveIcmJS("div2");
+  act.sequenceViewVisibleAuto = act.tableViewVisibleAuto = false;
+  act.sequenceViewVisible = act.searchBarVisible = false;
+  act.titleBarVisible = false;
+  act.tableViewVisibleAuto = true;
+  act.OpenProject("5xtd_separate_final_bin.icb",
+    {
+      onload: function (x) { js_icmstartup(); js_updatecheckboxes(); }
+    }
+  );
+  document.act = act;
+  //
+  window.onresize = function () { ACT.updateLayout(); }
+
+}
+
+function js_icmstartup() {
+}
+function js_updatecheckboxes() {
+}
+
+function js_4() { 
+
+}
+function js_1() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="C1 Complex with protein chains by color" ' );
+
+}
+function js_16() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-A201" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-201T" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-A201"' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_2() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-T201" ' );
+
+}
+function js_3() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-201T"' );
+
+}
+function js_15() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND2-I297" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND2-297T" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND2-I297" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_14() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-S90" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-90P" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-S90" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_13() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-A99" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-99T" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-A99" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_12() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-S458" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-458P" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-S458" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_11() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-F411" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-411S" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-F411" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_10() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND-4L-S28" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND-4L-28P" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND-4L-S28"' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_9() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-T387" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-387A" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-T387" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_7() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-W157" ' );
+
+}
+function js_8() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-W157" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-157R" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-W157" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+function js_5() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND6-A4" ' );
+
+}
+function js_6() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND6-A4" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND6-4V" ' );
+setTimeout( function () {
+document.act.RunCommands( 'display slide=slideshow.slides index="ND6-A4" ' );
+
+}, 1500 );
+
+}, 1500 );
+}
+
+function js_slide_1_1() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="Macroshape of full C1 complex" smooth' );
+}
+function js_slide_1_2() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="C1 Complex with protein chains by color" smooth' );
+}
+function js_slide_1_3() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="C1 complete with ND domain core" smooth' );
+}
+function js_slide_1_4() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="C1 complete with ND domain core" smooth' );
+}
+function js_slide_1_5() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND1-201T" smooth' );
+}
+function js_slide_1_6() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND2-297T" smooth' );
+}
+function js_slide_1_7() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-90P" smooth' );
+}
+function js_slide_1_8() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND3-99T" smooth' );
+}
+function js_slide_1_9() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-458P" smooth' );
+}
+function js_slide_1_10() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND4-411S" smooth' );
+}
+function js_slide_1_11() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND-4L-28P" smooth' );
+}
+function js_slide_1_12() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-387A" smooth' );
+}
+function js_slide_1_13() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND5-157R" smooth' );
+}
+function js_slide_1_14() { 
+document.act.RunCommands( 'display slide=slideshow.slides index="ND6-4V" smooth' );
+}
+
+function js_slide_2_1() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=1 smooth' );
+}
+function js_slide_2_2() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=2 smooth' );
+}
+function js_slide_2_3() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=3 smooth' );
+}
+function js_slide_2_4() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=4 smooth' );
+}
+function js_slide_2_5() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=5 smooth' );
+}
+function js_slide_2_6() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=6 smooth' );
+}
+function js_slide_2_7() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=7 smooth' );
+}
+function js_slide_2_8() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=8 smooth' );
+}
+function js_slide_2_9() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=9 smooth' );
+}
+function js_slide_2_10() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=10 smooth' );
+}
+function js_slide_2_11() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=11 smooth' );
+}
+function js_slide_2_12() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=12 smooth' );
+}
+function js_slide_2_13() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=13 smooth' );
+}
+function js_slide_2_14() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=14 smooth' );
+}
+function js_slide_2_15() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=15 smooth' );
+}
+function js_slide_2_16() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=16 smooth' );
+}
+function js_slide_2_17() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=17 smooth' );
+}
+function js_slide_2_18() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=18 smooth' );
+}
+function js_slide_2_19() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=19 smooth' );
+}
+function js_slide_2_20() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=20 smooth' );
+}
+function js_slide_2_21() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=21 smooth' );
+}
+function js_slide_2_22() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=22 smooth' );
+}
+function js_slide_2_23() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=23 smooth' );
+}
+function js_slide_2_24() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=24 smooth' );
+}
+function js_slide_2_25() { 
+document.act.RunCommands( 'display slide=slideshow.slides index=25 smooth' );
+}
+
+
+</script>
+<body>
+  <img id="pdbloader" src="http://molsoft.com/lib/icons/ajax-loader.gif" style="position:absolute; left:50%; top:50%; display:block;" />
+  <div id="div1" class="LeftRight" style="width:40%;display:none;">
+    <div id="tabh" class="tabsheader2">
+        <body id="page2" >
+<body id="page1" >
+<button id="tabh1" class="tabsheader2" onclick="ACT.selectTab(this);">TableS1</button>
+<button id="tabh2" class="tabsheader2" onclick="ACT.selectTab(this);">Slides</button>
+
+    </div>
+    <div id="tab1" class="tabscontent2" style="display:none">
+<head><title>
+TableS1
+</title></head>
+<body text="black" bgcolor="white" lang="EN-US" style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Generator" content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:107%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:11.0in 8.5in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+
+
+
+
+<div class="WordSection1">
+
+<br><font class="Apple-style-span" face="Calibri" size="5"><b>Functionally relevant mutation sites in the human mitochondrial respiratory complex 1 (MT-C1)&nbsp;</b></font></div><div class="WordSection1"><br></div><div class="WordSection1"><font class="Apple-style-span" face="Calibri">Supplement to "<i>OXPHOS remodeling in high-grade prostate cancer involves mtDNA mutations and a prognostic gene expression signature</i>" by&nbsp;B.Sch&ouml;pf, H.Weissensteiner, G.Sch&auml;fer, F.Fazzini, P.Charoentong, A.Naschberger, B.Rupp, L.Fendt, V.Bukur, I.Eichelbr&ouml;nner, P.Sorn, U.Sahin, F.Kronenberg, E.Gnaiger, H.Klocker</font>.</div><div class="WordSection1"><br></div><div class="WordSection1"><span class="Apple-style-span" style="font-family: Calibri; "><div><!--icmscript name="4"
+
+--></div><a class="icm" href="javascript:js_slide_1_1();">Overview of the MT-C1:</a></span></div><div class="WordSection1"><font class="Apple-style-span" face="Calibri"><br></font></div><div class="WordSection1"><font class="Apple-style-span" face="Calibri"><span class="Apple-style-span" style="font-family: 'Times New Roman'; "><div class="WordSection1" style="page: WordSection1; "><font class="Apple-style-span" face="Calibri">The transmenbrane region harboring the ND domains is shown as a yellow macrosphere. The&nbsp;<div></div><div><!--icmscript name="1"
+display slide=slideshow.slides index="C1 Complex with protein chains by color" 
+--></div><a class="icm" href="javascript:js_slide_1_2();">ribbon diagram</a>&nbsp;shows the individual peptide chains of the complex in different colors, highlighting the<div></div><a class="icm" href="javascript:js_slide_1_3();">ND-domain core</a>&nbsp;(colored as in Figure 4G),&nbsp;&nbsp;in which mutations associated with a high prostate cancer malignancy score (GLSN) are located.&nbsp;</font></div><div class="WordSection1" style="page: WordSection1; ">&nbsp;</div></span></font></div><div class="WordSection1"><font class="Apple-style-span" face="Calibri">Click on any native residue and then on the mutation to zoom in on the detail. Return to the&nbsp;<a class="icm" href="javascript:js_slide_1_4();">ND-domain core</a>&nbsp;overview between detail views for orientation.</font></div><div class="WordSection1"><br><table class="MsoTable15Grid4Accent1" border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:none">
+ <tbody><tr>
+  <td width="863" colspan="7" valign="top" style="width:647.5pt;border:solid #4472C4 1.0pt;
+  background:#4472C4;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><span style="font-size:14.0pt;
+  color:white">Functionally relevant mutations</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>ID</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">GLSN</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">L %</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">Gene</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">Locus</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">Mutation</p>
+  </td>
+  <td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><b>Possible explanation based on human mitochondrial respiratory
+  complex structure</b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_30</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">10</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">23</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND1</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">G3907A</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><font class="Apple-style-span" face="Calibri"><span class="Apple-style-span" style="font-size: medium; "></span></font></p><div><!--icmscript name="16"
+display slide=slideshow.slides index="ND1-A201" 
+display slide=slideshow.slides index="ND1-201T" 
+display slide=slideshow.slides index="ND1-A201"
+--></div><font class="Apple-style-span" face="Calibri">&nbsp;<br>&nbsp;&nbsp;<a class="icm" href="javascript:js_16();">A</a><font class="Apple-style-span" size="3">&nbsp;201&nbsp;</font><span class="Apple-style-span" style="font-size: medium; "><a class="icm" href="javascript:js_slide_1_5();">T</a></span></font><p></p><div><!--icmscript name="2"
+display slide=slideshow.slides index="ND1-T201" 
+--></div><p></p><!--icmscript name="3"
+display slide=slideshow.slides index="ND1-201T"
+-->
+</td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Change from small hydrophobic to polar residue in hydrophobic
+  environment. Likely destabilizes the structure due to incompatible larger polar
+  residue.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_44</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">9</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">30</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND2</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T5359C</p></td><td width="72" valign="top" style="text-align: center;width: 0.75in; border-top-style: none; border-top-width: initial; border-top-color: initial; border-left-style: none; border-left-width: initial; border-left-color: initial; border-bottom-style: solid; border-bottom-color: rgb(142, 170, 219); border-bottom-width: 1pt; border-right-style: solid; border-right-color: rgb(142, 170, 219); border-right-width: 1pt; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(217, 226, 243); padding-top: 0in; padding-right: 5.4pt; padding-bottom: 0in; padding-left: 5.4pt; background-position: initial initial; background-repeat: initial initial; "><font class="Apple-style-span" face="Calibri">&nbsp;<div><!--icmscript name="15"
+display slide=slideshow.slides index="ND2-I297" 
+display slide=slideshow.slides index="ND2-297T" 
+display slide=slideshow.slides index="ND2-I297" 
+--></div><a class="icm" href="javascript:js_15();">I</a>&nbsp;297&nbsp;<a class="icm" href="javascript:js_slide_1_6();">T</a>&nbsp;</font></td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Change from hydrophobic to polar residue in hydrophobic environment. Likely
+  destabilizes the structure due to incompatible polar residue.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_34</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">7</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">38</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND3</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T10326C</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">&nbsp; &nbsp;<font class="Apple-style-span" face="Calibri"><div><!--icmscript name="14"
+display slide=slideshow.slides index="ND3-S90" 
+display slide=slideshow.slides index="ND3-90P" 
+display slide=slideshow.slides index="ND3-S90" 
+--></div>&nbsp; &nbsp;<a class="icm" href="javascript:js_14();">S</a>&nbsp;90&nbsp;<a class="icm" href="javascript:js_slide_1_7();">P</a></font>&nbsp;</td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Substitution of polar H-bonded serine residue in an &alpha;-helix with
+  the helix-breaking proline likely destabilizes the secondary/tertiary
+  structure.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_81</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">9</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">60</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND3</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">G10353A</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">&nbsp;&nbsp;<div><!--icmscript name="13"
+display slide=slideshow.slides index="ND3-A99" 
+display slide=slideshow.slides index="ND3-99T" 
+display slide=slideshow.slides index="ND3-A99" 
+--></div>&nbsp;<font class="Apple-style-span" face="Calibri">&nbsp;<a class="icm" href="javascript:js_13();">A</a>&nbsp;99&nbsp;<a class="icm" href="javascript:js_slide_1_8();">T</a></font>&nbsp; &nbsp;</td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Change from hydrophobic to polar residue located on the surface of a
+  trans-membrane helix pointing towards the membrane site. Helix may lose hydrophobic
+  interaction needed for proper membrane insertion.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_32</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">7</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">85</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND4</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T12131C</p></td><td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">&nbsp;&nbsp;<div><!--icmscript name="12"
+display slide=slideshow.slides index="ND4-S458" 
+display slide=slideshow.slides index="ND4-458P" 
+display slide=slideshow.slides index="ND4-S458" 
+--></div><font class="Apple-style-span" face="Calibri">&nbsp;<a class="icm" href="javascript:js_12();">S</a>&nbsp;458&nbsp;<a class="icm" href="javascript:js_slide_1_9();">P</a></font>&nbsp;</td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Located at the C-terminus of ND-4. Loss of polar interaction and
+  reduced conformational freedom of proline could destabilize structure. </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_96</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">10</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">82</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND4</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T11991C</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">&nbsp;<div><!--icmscript name="11"
+display slide=slideshow.slides index="ND4-F411" 
+display slide=slideshow.slides index="ND4-411S" 
+display slide=slideshow.slides index="ND4-F411" 
+--></div>&nbsp;<font class="Apple-style-span" face="Calibri"><a class="icm" href="javascript:js_11();">F</a>&nbsp;411&nbsp;<a class="icm" href="javascript:js_slide_1_10();">S</a>&nbsp;</font>&nbsp;<p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"></p></td><td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt"><p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Change from large hydrophobic to small polar residue within a
+  hydrophobic interaction network can significantly destabilize the structure. 
+  </p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_97</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">8</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">59</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND4L</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T10551C</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">&nbsp;&nbsp;</p><div><!--icmscript name="10"
+display slide=slideshow.slides index="ND-4L-S28" 
+display slide=slideshow.slides index="ND-4L-28P" 
+display slide=slideshow.slides index="ND-4L-S28"
+--></div><font class="Apple-style-span" face="Calibri">&nbsp;&nbsp;<a class="icm" href="javascript:js_10();">S</a>&nbsp;28&nbsp;<a class="icm" href="javascript:js_slide_1_11();">P</a>&nbsp;</font><p></p>
+  </td>
+  <td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Substitution of polar H-bonded serine residue in an &alpha;-helix with
+  the helix-breaking proline eliminates 2 hydrogen bonds and destabilizes the structure.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_63</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">7</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">81</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND5</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">A13495G</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">&nbsp;&nbsp;</p><div><!--icmscript name="9"
+display slide=slideshow.slides index="ND5-T387" 
+display slide=slideshow.slides index="ND5-387A" 
+display slide=slideshow.slides index="ND5-T387" 
+--></div><font class="Apple-style-span" face="Calibri">&nbsp;<a class="icm" href="javascript:js_9();">T</a>&nbsp;387&nbsp;<a class="icm" href="javascript:js_slide_1_12();">A</a></font>&nbsp;<p></p>
+  </td>
+  <td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Located in loop of a discontinuous helix in the central axis of the
+  CI membrane domain believed to be important for proton pumping. Loss of
+  H-bond may trigger conformational change.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_95</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">7</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">55</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND5</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">T12805C</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">&nbsp; &nbsp;</p><div><!--icmscript name="7"
+display slide=slideshow.slides index="ND5-W157" 
+--></div><div><!--icmscript name="8"
+display slide=slideshow.slides index="ND5-W157" 
+display slide=slideshow.slides index="ND5-157R" 
+display slide=slideshow.slides index="ND5-W157" 
+--></div><font class="Apple-style-span" face="Calibri"><a class="icm" href="javascript:js_8();">W</a>&nbsp;157&nbsp;<a class="icm" href="javascript:js_slide_1_13();">R</a></font>&nbsp;<p></p>
+  </td>
+  <td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Change from large hydrophobic to charged residue within large
+  entropic freedom. Destabilizing disturbance of hydrophobic interaction
+  network.</p>
+  </td>
+ </tr>
+ <tr>
+  <td width="59" valign="top" style="width:44.35pt;border:solid #8EAADB 1.0pt;
+  border-top:none;background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal"><b>PK_66</b></p>
+  </td>
+  <td width="46" valign="top" style="width:34.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">7</p>
+  </td>
+  <td width="38" valign="top" style="width:28.55pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">39</p>
+  </td>
+  <td width="78" valign="top" style="width:58.8pt;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">MT-ND6</p>
+  </td>
+  <td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">G14663A</p>
+</td><td width="72" valign="top" style="width:.75in;border-top:none;border-left:none;
+  border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+<p class="MsoNormal" align="center" style="margin-bottom:0in;margin-bottom:.0001pt;
+  text-align:center;line-height:normal">
+</p><div><!--icmscript name="5"
+display slide=slideshow.slides index="ND6-A4" 
+--></div><div><!--icmscript name="6"
+display slide=slideshow.slides index="ND6-A4" 
+display slide=slideshow.slides index="ND6-4V" 
+display slide=slideshow.slides index="ND6-A4" 
+--></div>&nbsp; &nbsp;<br>&nbsp; <font class="Apple-style-span" face="Calibri">&nbsp;<a class="icm" href="javascript:js_6();">A</a>&nbsp;4&nbsp;<a class="icm" href="javascript:js_slide_1_14();">V</a>&nbsp;
+  </font></td>
+  <td width="498" valign="top" style="width:373.25pt;border-top:none;border-left:
+  none;border-bottom:solid #8EAADB 1.0pt;border-right:solid #8EAADB 1.0pt;
+  background:#D9E2F3;padding:0in 5.4pt 0in 5.4pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal">Conserved substitution (small hydrophobic to larger hydrophobic). No
+  obvious explanation from structural point of view.</p>
+  </td>
+ </tr>
+</tbody></table>
+
+<p class="MsoNormal">&nbsp;</p>
+
+<p class="MsoNormal">&nbsp;</p>
+
+</div>
+
+
+
+
+
+
+
+
+</body>
+</div>
+<div id="tab2" class="tabscontent2" style="display:none">
+
+<a class="icm" href="javascript:js_slide_2_1();">Macroshape of full C1 complex</a><br><a class="icm" href="javascript:js_slide_2_2();">C1 Complex with protein chains by color</a><br><a class="icm" href="javascript:js_slide_2_3();">C1 complete with ND domain core</a><br><a class="icm" href="javascript:js_slide_2_4();">ND1-A201</a><br><a class="icm" href="javascript:js_slide_2_5();">ND1-201T</a><br><a class="icm" href="javascript:js_slide_2_6();">ND2-I297</a><br><a class="icm" href="javascript:js_slide_2_7();">ND2-297T</a><br><a class="icm" href="javascript:js_slide_2_8();">ND3-S90</a><br><a class="icm" href="javascript:js_slide_2_9();">ND3-90P</a><br><a class="icm" href="javascript:js_slide_2_10();">ND3-A99</a><br><a class="icm" href="javascript:js_slide_2_11();">ND3-99T</a><br><a class="icm" href="javascript:js_slide_2_12();">ND4-S458</a><br><a class="icm" href="javascript:js_slide_2_13();">ND4-458P</a><br><a class="icm" href="javascript:js_slide_2_14();">ND4-F411</a><br><a class="icm" href="javascript:js_slide_2_15();">ND4-411S</a><br><a class="icm" href="javascript:js_slide_2_16();">ND-4L-S28</a><br><a class="icm" href="javascript:js_slide_2_17();">ND-4L-28P</a><br><a class="icm" href="javascript:js_slide_2_18();">ND5-T387</a><br><a class="icm" href="javascript:js_slide_2_19();">ND5-387A</a><br><a class="icm" href="javascript:js_slide_2_20();">ND5-W157</a><br><a class="icm" href="javascript:js_slide_2_21();">ND5-157R</a><br><a class="icm" href="javascript:js_slide_2_22();">ND6-A4</a><br><a class="icm" href="javascript:js_slide_2_23();">ND6-4V</a><br><a class="icm" href="javascript:js_slide_2_24();">Overview of human respiratory complex 1</a><br><a class="icm" href="javascript:js_slide_2_25();">Overall view of CI in colored ribbons</a><br>
+</div>
+
+  </div>
+  <div id="splitter" class="Splitter" style="display:none;"> </div>
+  <div id="div2" class="LeftRight" style="width:60%;display:none;">
+  </div>
+</body>
+
