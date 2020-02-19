@@ -13,6 +13,8 @@ Supplement to "OXPHOS remodeling in high-grade prostate cancer involves mtDNA mu
 
 
 
-### Online Preview on [http://genepi.i-med.ac.at/pca-mt-c1/](http://genepi.i-med.ac.at/pca-mt-c1/)
+### Online Preview 
+
+This package can also be accessed directly via [http://genepi.i-med.ac.at/pca-mt-c1/](http://genepi.i-med.ac.at/pca-mt-c1/). Please be aware of possible delays - as the package exceeds 40 MB.
 
 [![Preview](https://github.com/genepi/mt-c1/blob/master/iSee/isee_preview.png)](http://genepi.i-med.ac.at/pca-mt-c1/)
