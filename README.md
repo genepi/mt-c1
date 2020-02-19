@@ -6,8 +6,8 @@ Supplement to "OXPHOS remodeling in high-grade prostate cancer involves mtDNA mu
 1. Local Webserver - e.g. [python SimpleHTTPServer](https://www.python.org/downloads/), [Node.js http-server](https://nodejs.org/en/download/), [XAMPP](https://www.apachefriends.org/download.html) or similar.
 
 ### Run 
-1. Download Package, extract and navigate to folder in console 
-2. Start Webserver in same folder, e.g. python -m SimpleHTTPServer 8000
+1. [Download Package](https://github.com/genepi/mt-c1/archive/master.zip), extract and navigate to folder iSee in your command prompt.  
+2. Start Webserver in the iSee folder, e.g. python -m SimpleHTTPServer 8000
 3. Open Browser and insert url: localhost:8000
 
 
